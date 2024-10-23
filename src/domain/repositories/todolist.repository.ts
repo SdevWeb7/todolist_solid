@@ -1,9 +1,8 @@
 import { injectable } from "inversify";
 
 import { db } from "@/lib/db/db";
-import {TodolistInsert, todolists} from "@/lib/db/schemas";
-import {eq} from "drizzle-orm";
-import {revalidatePath} from "next/cache";
+import {todolists} from "@/lib/db/schemas";
+import {and, eq} from "drizzle-orm";
 
 
 
@@ -25,13 +24,24 @@ export class TodolistRepository {
 
     public async createTodolist(userId: string, title: string) {
         try {
-            await db.insert(todolists).values({
+            return await db.insert(todolists).values({
                 userId: userId,
                 title: title,
             }).returning().execute();
-            revalidatePath("/todolist");
         } catch (error) {
             throw new Error("Failed to create todo", { cause: error });
+        }
+    }
+
+    public async deleteTodolist(userId: string, id: string) {
+        try {
+            return await db.delete(todolists).where(
+                and(
+                    eq(todolists.userId, userId),
+                    eq(todolists.id, id)))
+                .execute();
+        } catch (error) {
+            throw new Error("Failed to delete todo", { cause: error });
         }
     }
 }

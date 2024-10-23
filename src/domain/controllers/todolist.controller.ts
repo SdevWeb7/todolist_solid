@@ -25,4 +25,8 @@ export class TodolistController {
         return this.todolistService.createTodolist(user.id, title);
     }
 
+    public async deleteTodolist(token: string | undefined, id: string) {
+        const user = await this.authService.verifyToken(token);
+        return this.todolistService.deleteTodolist(user.id, id);
+    }
 }

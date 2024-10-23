@@ -49,13 +49,6 @@ export class AuthService {
 
     public async verifyToken(token: string | undefined): Promise<UserSelect> {
         if (!token) throw new Error('Token is required');
-        try {
-            const user = jwt.verify(token, env.JWT_SECRET) as UserSelect;
-            return user;
-        } catch (error) {
-            throw new Error('Invalid token', {
-                cause: error
-            });
-        }
+        return jwt.verify(token, env.JWT_SECRET) as UserSelect;
     }
 }

@@ -24,10 +24,8 @@ export class AuthController {
     }
 
     public async signUp(input: TSignUpZod): Promise<string> {
-        const {data, error} = await signUpSchema.safeParseAsync(input);
-
+        const {data, error} = signUpSchema.safeParse(input);
         if (error) throw new Error("invalide data", { cause: error.errors });
-
 
         try {
             return await this.authService.signUp(data);

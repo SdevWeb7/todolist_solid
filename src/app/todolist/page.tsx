@@ -1,9 +1,11 @@
-import {cookies} from "next/headers";
+import {cookies, headers} from "next/headers";
 import {redirect} from "next/navigation";
 import {getInjection} from "@/lib/di";
-import TodosBlock from "@/components/todolist/todos-block";
+import TodosBlock from "@/components/todo/todos-block";
 import Link from "next/link";
 import CreateTodolistForm from "@/components/todolist/create-todolist-form";
+import DeleteTodolistBtn from "@/components/todolist/delete-todolist-btn";
+import EditTodolistBtn from "@/components/todolist/edit-todolist-btn";
 
 
 const getTodolist = async () => {
@@ -12,7 +14,7 @@ const getTodolist = async () => {
     try {
         const todolistController = getInjection('TodolistController');
         const todolists = await todolistController.getTodolists(token);
-        return todolists || [];
+        return todolists;
     } catch (error) {
         console.error('Erreur lors de la récupération des todolists :', error);
         redirect('/');
@@ -27,6 +29,8 @@ type TodolistPageProps = {
 export default async function Page({searchParams}: TodolistPageProps) {
     const todolists = await getTodolist();
 
+    const headersList = headers();
+    console.log(headersList);
 
 
     return <main className={'flex-1 px-4'}>
@@ -40,13 +44,18 @@ export default async function Page({searchParams}: TodolistPageProps) {
 
                 <CreateTodolistForm />
 
-                <ul>
+                <ul className={'space-y-2'}>
                     {todolists.map((todolist) => (
                         <li
+                            className={'w-full flex justify-between items-center'}
                             key={todolist.id}>
                             <Link
-                                className={'px-6 py-2 bg-foreground text-background rounded-xl text-xl block'}
+                                className={'px-6 py-2 bg-foreground text-background rounded-xl text-xl block max-w-[50%]'}
                                 href={`/todolist/?currentTitle=${todolist.title}`}>{todolist.title}</Link>
+
+                            <EditTodolistBtn title={todolist.title as string} />
+
+                            <DeleteTodolistBtn id={todolist.id} />
                         </li>
                     ))}
                 </ul>

@@ -6,6 +6,7 @@ import {getInjection} from "@/lib/di";
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import {env} from "@/lib/env";
+import {redirect} from "next/navigation";
 
 
 
@@ -16,34 +17,26 @@ export const checkAuthAction = async () => {
         const authController = getInjection("AuthController");
         return await authController.verifyToken(token);
     } catch (error) {
-        console.error('Erreur lors de la vérification de l\'authentification :', error);
+        console.error("La vérification du token a échoué", { cause: error });
         return null;
     }
 };
 
 
 export const signUpAction = async (input: TSignUpZod) => {
-    const {data: safeData, error} = signUpSchema.safeParse(input);
-    if (error) throw new Error("invalide data", { cause: error.errors });
-
     const authController = getInjection("AuthController");
 
-    try {
-        const token =  await authController.signUp(safeData);
+    const token =  await authController.signUp(input);
 
-        cookies().set({
-            name: 'token',
-            value: token,
-            httpOnly: true,
-            secure: true,
-            path: '/',
-            maxAge: 3600 * 24 * 7,
-        });
-        return token;
-    } catch (error) {
-        console.error(error);
-        throw new Error("La connexion entre la server action et le controller a échoué", { cause: error });
-    }
+    cookies().set({
+        name: 'token',
+        value: token,
+        httpOnly: true,
+        secure: true,
+        path: '/',
+        maxAge: 3600 * 24 * 7,
+    });
+    redirect('/todolist');
 };
 
 
@@ -54,21 +47,16 @@ export const signInAction = async (input: TSignInZod) => {
 
     const authController = getInjection("AuthController");
 
-    try {
-        const user =  await authController.signIn(safeData.email, safeData.password);
-        const token = jwt.sign( user, env.JWT_SECRET, { expiresIn: '1h' });
+    const user =  await authController.signIn(safeData.email, safeData.password);
+    const token = jwt.sign( user, env.JWT_SECRET, { expiresIn: '1h' });
 
-        cookies().set({
-            name: 'token',
-            value: token,
-            httpOnly: true,
-            secure: true,
-        });
-        return user;
-    } catch (error) {
-        console.error(error);
-        throw new Error("La connexion entre la server action et le controller a échoué", { cause: error });
-    }
+    cookies().set({
+        name: 'token',
+        value: token,
+        httpOnly: true,
+        secure: true,
+    });
+    redirect('/todolist');
 };
 
 export const signOutAction = async () => {
@@ -76,7 +64,6 @@ export const signOutAction = async () => {
         cookies().delete('token');
         return { success: true };
     } catch (error) {
-        console.error(error);
         throw new Error("La déconnexion a échoué", { cause: error });
     }
 }
