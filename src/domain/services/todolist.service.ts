@@ -22,4 +22,8 @@ export class TodolistService {
     public async deleteTodolist(userId: string, id: string) {
         return await this.todolistRepository.deleteTodolist(userId, id);
     }
+
+    public async editTodolist(userId: string, id: string, title: string) {
+        return await this.todolistRepository.editTodolist(userId, id, title);
+    }
 }

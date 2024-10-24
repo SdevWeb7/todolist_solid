@@ -21,3 +21,11 @@ export const deleteTodolistAction = async (id: string) => {
     await todolistController.deleteTodolist(token, id);
     revalidatePath('/');
 }
+
+export const editTodolistAction = async (id: string, title: string) => {
+    const token = cookies().get('token')?.value;
+
+    const todolistController = getInjection('TodolistController');
+    await todolistController.editTodolist(token, id, title);
+    revalidatePath('/');
+}

@@ -29,4 +29,9 @@ export class TodolistController {
         const user = await this.authService.verifyToken(token);
         return this.todolistService.deleteTodolist(user.id, id);
     }
+
+    public async editTodolist(token: string | undefined, id: string, title: string) {
+        const user = await this.authService.verifyToken(token);
+        return this.todolistService.editTodolist(user.id, id, title);
+    }
 }

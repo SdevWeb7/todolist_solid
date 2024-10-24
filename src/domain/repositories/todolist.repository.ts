@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 
 import { db } from "@/lib/db/db";
-import {todolists} from "@/lib/db/schemas";
+import {todolists, TodolistSelect} from "@/lib/db/schemas";
 import {and, eq} from "drizzle-orm";
 
 
@@ -9,7 +9,7 @@ import {and, eq} from "drizzle-orm";
 @injectable()
 export class TodolistRepository {
 
-    public async getTodolists(userId: string) {
+    public async getTodolists(userId: string): Promise<TodolistSelect[]> {
         try {
             const todolistsTemp = await db
                                         .select()
@@ -42,6 +42,20 @@ export class TodolistRepository {
                 .execute();
         } catch (error) {
             throw new Error("Failed to delete todo", { cause: error });
+        }
+    }
+
+    public async editTodolist(userId: string, id: string, title: string) {
+        try {
+            return await db.update(todolists).set({
+                title: title,
+            }).where(
+                and(
+                    eq(todolists.userId, userId),
+                    eq(todolists.id, id)))
+                .execute();
+        } catch (error) {
+            throw new Error("Failed to edit todo", { cause: error });
         }
     }
 }

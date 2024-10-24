@@ -39,8 +39,8 @@ export const todolists = pgTable("todolists", {
         .notNull()
         .defaultNow(),
     id: uuid("id").primaryKey().defaultRandom().unique(),
-    title: varchar("title"),
-    userId: uuid("userId").references(() => users.id),
+    title: varchar("title").notNull(),
+    userId: uuid("userId").references(() => users.id).notNull(),
 });
 
 

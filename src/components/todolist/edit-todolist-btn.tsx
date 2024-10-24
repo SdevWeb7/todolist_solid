@@ -8,8 +8,9 @@ import {useSearchParams} from "next/navigation";
 
 type EditTodolistBtnProps = {
     title: string;
+    className?: string;
 }
-export default function EditTodolistBtn({title}: EditTodolistBtnProps) {
+export default function EditTodolistBtn({title, className}: EditTodolistBtnProps) {
     const searchParams = useSearchParams();
 
     const params = new URLSearchParams(Array.from(searchParams.entries()));
@@ -17,7 +18,9 @@ export default function EditTodolistBtn({title}: EditTodolistBtnProps) {
 
 
 
-    return <Link href={`/todolist?${params.toString()}`}>
+    return <Link
+                className={className}
+                href={`/todolist?${params.toString()}`}>
         <EditIcon className={'cursor-pointer'} />
     </Link>
 }

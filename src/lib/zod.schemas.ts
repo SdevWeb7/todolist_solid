@@ -15,9 +15,14 @@ export const createTodolistSchema = z.object({
     title: z.string().min(3, "Minimum 3 caractères").max(30, "Maximum 30 caractères"),
 });
 
+export const editTodolistSchema = createTodolistSchema.extend({
+    id: z.string().uuid("ID invalide"),
+});
+
 
 
 
 export type TSignInZod = z.infer<typeof signInSchema>;
 export type TSignUpZod = z.infer<typeof signUpSchema>;
 export type TCreateTodolistZod = z.infer<typeof createTodolistSchema>;
+export type TEditTodolistZod = z.infer<typeof editTodolistSchema>;

@@ -6,9 +6,13 @@ import Link from "next/link";
 import CreateTodolistForm from "@/components/todolist/create-todolist-form";
 import DeleteTodolistBtn from "@/components/todolist/delete-todolist-btn";
 import EditTodolistBtn from "@/components/todolist/edit-todolist-btn";
+import {Input} from "@/components/ui/input";
+import {TodolistSelect} from "@/lib/db/schemas";
+import EditTodolistForm from "@/components/todolist/edit-todolist-form";
+import {cn} from "@/lib/utils";
 
 
-const getTodolist = async () => {
+const getTodolist = async (): Promise<TodolistSelect[]> => {
     const token = cookies().get('token')?.value;
 
     try {
@@ -29,10 +33,6 @@ type TodolistPageProps = {
 export default async function Page({searchParams}: TodolistPageProps) {
     const todolists = await getTodolist();
 
-    const headersList = headers();
-    console.log(headersList);
-
-
     return <main className={'flex-1 px-4'}>
 
         <h1 className={'text-center text-4xl font-bold mt-16'}>Todolists</h1>
@@ -47,15 +47,26 @@ export default async function Page({searchParams}: TodolistPageProps) {
                 <ul className={'space-y-2'}>
                     {todolists.map((todolist) => (
                         <li
-                            className={'w-full flex justify-between items-center'}
+                            className={cn('w-full flex items-center gap-2 rounded border', {
+                                'bg-foreground text-background': searchParams.currentTitle === todolist.title,
+                            })}
                             key={todolist.id}>
-                            <Link
-                                className={'px-6 py-2 bg-foreground text-background rounded-xl text-xl block max-w-[50%]'}
-                                href={`/todolist/?currentTitle=${todolist.title}`}>{todolist.title}</Link>
 
-                            <EditTodolistBtn title={todolist.title as string} />
+                            {searchParams.currentEditing === todolist.title ?
+                                <EditTodolistForm title={todolist.title} id={todolist.id} /> :
+                                <Link
+                                    className={'py-2 px-3 text-xl flex-1'}
+                                    href={`/todolist/?currentTitle=${todolist.title}`}>{todolist.title}</Link>}
 
-                            <DeleteTodolistBtn id={todolist.id} />
+
+                            {searchParams.currentEditing !== todolist.title && (
+                                <EditTodolistBtn
+                                        className={'ml-auto'}
+                                        title={todolist.title as string} />)}
+
+                            <DeleteTodolistBtn
+                                        className={'pr-2 h-8 w-8'}
+                                        id={todolist.id} />
                         </li>
                     ))}
                 </ul>

@@ -3,13 +3,15 @@
 
 import {DeleteIcon} from "lucide-react";
 import {deleteTodolistAction} from "@/actions/todolist.actions";
+import {cn} from "@/lib/utils";
 
 
 
 type DeleteTodolistBtnProps = {
     id: string;
+    className?: string;
 }
-export default function DeleteTodolistBtn({id}: DeleteTodolistBtnProps) {
+export default function DeleteTodolistBtn({id, className}: DeleteTodolistBtnProps) {
 
     const onDeleteTodolist = async (id: string) => {
         await deleteTodolistAction(id);
@@ -17,6 +19,6 @@ export default function DeleteTodolistBtn({id}: DeleteTodolistBtnProps) {
 
     return <DeleteIcon
                     onClick={() => onDeleteTodolist(id)}
-                    className={'cursor-pointer'} />
+                    className={cn('cursor-pointer', className)} />
 
 }
