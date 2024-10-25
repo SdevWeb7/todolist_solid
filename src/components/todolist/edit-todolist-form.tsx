@@ -25,7 +25,7 @@ export default function EditTodolistForm({title, id}: {title: string, id: string
 
     const onSubmit = async (data: TEditTodolistZod) => {
         await editTodolistAction(id, data.title);
-        params.set('currentEditing', "done");
+        params.delete('currentEditing');
         if (params.has('currentTitle')) {
             params.set('currentTitle', data.title);
         }

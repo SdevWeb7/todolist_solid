@@ -11,4 +11,8 @@ export class TodoService {
         private readonly todoRepository: TodoRepository,
     ) {}
 
+    async getTodos(userId: string, todolistName: string) {
+        const [todolist] = await this.todoRepository.getTodolistByName(userId, todolistName);
+        return this.todoRepository.getTodos(userId, todolist.id);
+    }
 }

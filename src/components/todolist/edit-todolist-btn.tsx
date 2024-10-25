@@ -2,7 +2,7 @@
 
 
 import Link from "next/link";
-import {EditIcon} from "lucide-react";
+import {Edit3Icon} from "lucide-react";
 import {useSearchParams} from "next/navigation";
 
 
@@ -21,6 +21,6 @@ export default function EditTodolistBtn({title, className}: EditTodolistBtnProps
     return <Link
                 className={className}
                 href={`/todolist?${params.toString()}`}>
-        <EditIcon className={'cursor-pointer'} />
+        <Edit3Icon className={'cursor-pointer'} />
     </Link>
 }

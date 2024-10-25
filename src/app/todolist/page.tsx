@@ -1,4 +1,4 @@
-import {cookies, headers} from "next/headers";
+import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 import {getInjection} from "@/lib/di";
 import TodosBlock from "@/components/todo/todos-block";
@@ -6,7 +6,6 @@ import Link from "next/link";
 import CreateTodolistForm from "@/components/todolist/create-todolist-form";
 import DeleteTodolistBtn from "@/components/todolist/delete-todolist-btn";
 import EditTodolistBtn from "@/components/todolist/edit-todolist-btn";
-import {Input} from "@/components/ui/input";
 import {TodolistSelect} from "@/lib/db/schemas";
 import EditTodolistForm from "@/components/todolist/edit-todolist-form";
 import {cn} from "@/lib/utils";
@@ -21,13 +20,13 @@ const getTodolist = async (): Promise<TodolistSelect[]> => {
         return todolists;
     } catch (error) {
         console.error('Erreur lors de la récupération des todolists :', error);
-        redirect('/');
+        redirect('/auth/signin');
     }
 }
 
 type TodolistPageProps = {
     searchParams: {
-        [key: string]: string | string[] | undefined;
+        [key: string]: string | undefined;
     };
 }
 export default async function Page({searchParams}: TodolistPageProps) {
@@ -38,7 +37,7 @@ export default async function Page({searchParams}: TodolistPageProps) {
         <h1 className={'text-center text-4xl font-bold mt-16'}>Todolists</h1>
 
 
-        <section className={'md:flex border shadow mt-16 min-h-80 p-4 space-y-8'}>
+        <section className={'md:flex border shadow mt-16 min-h-80 p-4 space-y-8 md:space-y-0'}>
             <div className={'border-r pr-4'}>
                 <h2 className={'text-center underline text-lg'}>Mes todolists</h2>
 
@@ -62,7 +61,7 @@ export default async function Page({searchParams}: TodolistPageProps) {
                             {searchParams.currentEditing !== todolist.title && (
                                 <EditTodolistBtn
                                         className={'ml-auto'}
-                                        title={todolist.title as string} />)}
+                                        title={todolist.title} />)}
 
                             <DeleteTodolistBtn
                                         className={'pr-2 h-8 w-8'}
@@ -73,7 +72,7 @@ export default async function Page({searchParams}: TodolistPageProps) {
             </div>
 
             <TodosBlock
-                currentTitle={searchParams.currentTitle as string || null} />
+                currentTitle={searchParams.currentTitle || null} />
         </section>
 
 

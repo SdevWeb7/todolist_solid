@@ -46,7 +46,7 @@ export const todolists = pgTable("todolists", {
 
 
 export const todos = pgTable("todos", {
-    completed: boolean("completed"),
+    completed: boolean("completed").default(false).notNull(),
     content: varchar("content").notNull(),
     createdAt: timestamp("createdAt", {
         mode: "date",
@@ -56,8 +56,12 @@ export const todos = pgTable("todos", {
         .notNull()
         .defaultNow(),
     id: uuid("id").primaryKey().defaultRandom().unique(),
-    todolistId: uuid("listId").references(() => todolists.id),
-    title: varchar("title"),
+    todolistId: uuid("todolistId").references(() => todolists.id, {
+        onDelete: "cascade",
+    }).notNull(),
+    userId: uuid("userId").references(() => users.id, {
+        onDelete: "cascade",
+    }).notNull(),
 });
 
 
