@@ -29,4 +29,39 @@ export class TodoRepository {
             throw new Error("Failed to get todos", { cause: error });
         }
     }
+    public async addTodo(userId: string, todolistId: string, content: string) {
+        try {
+            return await db.insert(todos).values({
+                userId,
+                todolistId,
+                content,
+                completed: false
+            }).execute();
+        } catch (error) {
+            throw new Error("Failed to add todo", { cause: error });
+        }
+    }
+    public async deleteTodo(userId: string, todoId: string) {
+        try {
+            return await db.delete(todos).where(and(
+                eq(todos.userId, userId),
+                eq(todos.id, todoId)
+            )).execute();
+        } catch (error) {
+            throw new Error("Failed to delete todo", { cause: error });
+        }
+    }
+
+    public async toggleTodo(userId: string, todoId: string, checked: boolean) {
+        try {
+            return await db.update(todos).set({
+                completed: !checked
+            }).where(and(
+                eq(todos.userId, userId),
+                eq(todos.id, todoId)
+            )).execute();
+        } catch (error) {
+            throw new Error("Failed to toggle todo", { cause: error });
+        }
+    }
 }

@@ -1,9 +1,8 @@
 import {cookies} from "next/headers";
 import {getInjection} from "@/lib/di";
 import {redirect} from "next/navigation";
-import {Input} from "@/components/ui/input";
-import {DeleteIcon, Edit3Icon} from "lucide-react";
 import AddTodoForm from "@/components/todo/add-todo-form";
+import TodoList from "@/components/todo/todo-list";
 
 
 export const getTodos = async (todolistName: string | null) => {
@@ -23,35 +22,17 @@ export default async function TodosBlock({currentTitle}: {currentTitle: string |
     const todos = await getTodos(currentTitle);
 
 
-    return <div className={'flex-1 space-y-8 pl-4'}>
+    return <div className={'flex-1 flex flex-col pl-4'}>
 
         {!currentTitle && <p className={'text-center text-xl my-16'}>Veuillez sélectionner une todolist</p>}
 
 
         {currentTitle && <>
-                <h2 className={'text-center text-4xl font-bold uppercase'}>{currentTitle}</h2>
-                <AddTodoForm />
+                <h2 className={'text-center text-3xl font-bold'}>Todolist: {currentTitle}</h2>
+                <AddTodoForm currentTitle={currentTitle} />
         </>}
 
-        {currentTitle && todos && todos.length <= 0 && <p className={'text-center text-xl my-16'}>Aucune tâche pour le moment</p>}
 
-        {currentTitle && todos && todos.length > 0 && <ul className={'space-y-2'}>
-            {todos.map((todo) => (
-                <li
-                    className={'w-full flex justify-between items-center gap-2 rounded border'}
-                    key={todo.id}>
-
-                    <Input
-                        className={'w-6 h-6'}
-                        type="checkbox"
-                        checked={todo.completed} />
-                    <p className={'flex-1 text-center'}>{todo.content}</p>
-
-                    <Edit3Icon />
-                    <DeleteIcon />
-                </li>
-            ))}
-        </ul>}
-
+       <TodoList todos={todos} currentTitle={currentTitle} />
     </div>;
 }

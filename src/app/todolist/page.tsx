@@ -34,12 +34,12 @@ export default async function Page({searchParams}: TodolistPageProps) {
 
     return <main className={'flex-1 px-4'}>
 
-        <h1 className={'text-center text-4xl font-bold mt-16'}>Todolists</h1>
+        <h1 className={'text-center text-4xl font-bold my-8'}>Todolists</h1>
 
 
         <section className={'md:flex border shadow mt-16 min-h-80 p-4 space-y-8 md:space-y-0'}>
             <div className={'border-r pr-4'}>
-                <h2 className={'text-center underline text-lg'}>Mes todolists</h2>
+                <h2 className={'text-center underline text-xl'}>Mes todolists</h2>
 
                 <CreateTodolistForm />
 

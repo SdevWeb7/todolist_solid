@@ -20,12 +20,13 @@ export default function CreateTodolistForm() {
 
     const onSubmit = async (data: TCreateTodolistZod) => {
         await addTodolistAction(data.title);
+        form.reset();
     }
 
     return <Form {...form}>
         <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className={'flex items-center justify-center border-b border-black mb-6'}>
+            className={'flex items-center justify-center mb-6'}>
             <FormField
                 control={form.control}
                 name="title"

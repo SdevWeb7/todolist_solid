@@ -20,4 +20,21 @@ export class TodoController {
         return this.todoService.getTodos(user.id, todolistName);
     }
 
+    async addTodo(token: string | undefined, todolistTitle: string, content: string) {
+        const user = await this.authService.verifyToken(token);
+
+        return this.todoService.addTodo(user.id, todolistTitle, content);
+    }
+
+    async deleteTodo(token: string | undefined, todoId: string) {
+        const user = await this.authService.verifyToken(token);
+
+        return this.todoService.deleteTodo(user.id, todoId);
+    }
+
+    async toggleTodo(token: string | undefined, todoId: string, checked: boolean) {
+        const user = await this.authService.verifyToken(token);
+
+        return this.todoService.toggleTodo(user.id, todoId, checked);
+    }
 }
