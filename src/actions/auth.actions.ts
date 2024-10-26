@@ -1,7 +1,7 @@
 "use server";
 
 
-import {signInSchema, signUpSchema, TSignInZod, TSignUpZod} from "@/lib/zod.schemas";
+import {signInSchema, TSignInZod, TSignUpZod} from "@/lib/zod.schemas";
 import {getInjection} from "@/lib/di";
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
