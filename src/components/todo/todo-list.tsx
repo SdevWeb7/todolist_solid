@@ -36,7 +36,7 @@ export default function TodoList({todos, currentTitle}: TodoListProps) {
 
 
 
-        <div className={'flex gap-4 mt-auto mx-auto'}>
+        <div className={'flex gap-4 mt-8 mx-auto'}>
 
             <Button
                 onClick={() => setFilter('all')}
