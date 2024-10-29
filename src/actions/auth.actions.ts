@@ -11,15 +11,10 @@ import {redirect} from "next/navigation";
 
 
 export const checkAuthAction = async () => {
-    try {
-        const token = cookies().get('token')?.value;
+    const token = cookies().get('token')?.value;
 
-        const authController = getInjection("AuthController");
-        return await authController.verifyToken(token);
-    } catch (error) {
-        console.error("La vérification du token a échoué", { cause: error });
-        return null;
-    }
+    const authController = getInjection("AuthController");
+    return await authController.verifyToken(token);
 };
 
 

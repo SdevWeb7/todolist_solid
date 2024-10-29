@@ -13,7 +13,7 @@ export class AuthController {
     ) {}
 
 
-    public async verifyToken(token: string | undefined): Promise<UserSelect> {
+    public async verifyToken(token: string | undefined): Promise<UserSelect | null> {
         try {
             return await this.authService.verifyToken(token);
         } catch (error) {

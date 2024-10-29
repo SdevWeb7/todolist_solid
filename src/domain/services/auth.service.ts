@@ -1,18 +1,18 @@
 import {inject, injectable} from "inversify";
 import {DI_SYMBOLS} from "@/lib/di/types";
-import {AuthRepository} from "@/domain/repositories/auth.repository";
 import {TSignUpZod} from "@/lib/zod.schemas";
 import {UserSelect} from "@/lib/db/schemas";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {env} from "@/lib/env";
+import type {AuthRepositoryInterface} from "@/domain/repositories/auth.repository.interface";
 
 
 @injectable()
 export class AuthService {
     constructor(
         @inject(DI_SYMBOLS.AuthRepository)
-        private readonly authRepository: AuthRepository,
+        private readonly authRepository: AuthRepositoryInterface,
     ) {}
 
 
@@ -47,8 +47,13 @@ export class AuthService {
     }
 
 
-    public async verifyToken(token: string | undefined): Promise<UserSelect> {
-        if (!token) throw new Error('Token is required');
-        return jwt.verify(token, env.JWT_SECRET) as UserSelect;
+    public async verifyToken(token: string | undefined): Promise<UserSelect | null> {
+        try {
+            if (!token) throw new Error('Token is required');
+            return jwt.verify(token, env.JWT_SECRET) as UserSelect;
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
     }
 }

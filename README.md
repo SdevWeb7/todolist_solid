@@ -1,18 +1,35 @@
 
 
+Next:
+- où mettre les try catch (redirect throw une error)
+- toaster
 
 
 
-ou mettre les try catch (redirect throw une error)
+Production:
+- hebergement
+- docker
+- cron
+- environnement edge
 
 
-toaster et form  (button) shadcn
 
-environnement edge
-
-mise en prod  cron  notif mail
-
-docker
+Developpement:
+- tests
 
 
-tests
+
+metier de dev:
+- ce qu'on attend du dev
+
+
+
+Compétences indispensables à avoir:
+
+
+
+
+Livres:
+- clean code
+- clean codeur
+- clean architecture

@@ -4,11 +4,12 @@ import {users, UserSelect} from "@/lib/db/schemas";
 import {TSignUpZod} from "@/lib/zod.schemas";
 import bcrypt from 'bcryptjs';
 import {eq} from "drizzle-orm";
+import {AuthRepositoryInterface} from "@/domain/repositories/auth.repository.interface";
 
 
 
 @injectable()
-export class AuthRepository {
+export class AuthRepository implements AuthRepositoryInterface{
     constructor() {}
 
 
